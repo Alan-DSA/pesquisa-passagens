@@ -18,12 +18,12 @@ BeautifulSoup
 Você também deve ter o Google Chrome instalado em seu computador.
 
 
-Como funciona
+## Como funciona
 O script acessa o site Melhores Destinos, insere informações de busca (origem, destino e datas), clica no botão de pesquisa e extrai o preço das passagens aéreas disponíveis na primeira janela de resultados.
 
 O código utiliza a biblioteca Beautiful Soup para analisar o HTML da página e encontrar o preço das passagens aéreas disponíveis.
 
-Como usar
-Para executar o script, abra o arquivo search_flights.py em seu editor de código Python e execute-o.
+## Como usar
+Para executar o script, abra o arquivo Pesquisa_passagem.py em seu editor de código Python e execute-o.
 
 Ao ser executado, o script abrirá o site Melhores Destinos, inserirá as informações de busca, extrairá o preço das passagens aéreas disponíveis e imprimirá na tela.
