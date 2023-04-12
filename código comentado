@@ -1,0 +1,60 @@
+#O código começa importando as bibliotecas necessárias:
+from selenium.webdriver.common.by import By
+import undetected_chromedriver as uc
+import time
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from bs4 import BeautifulSoup
+
+
+#Em seguida, ele instancia um objeto do driver do Chrome usando a biblioteca undetected_chromedriver:
+
+driver = uc.Chrome()
+#O código acessa o site Melhores Destinos:
+
+driver.get("https://www.melhoresdestinos.com.br/passagens-aereas")
+#O código espera 10 segundos para que a página carregue completamente:
+
+time.sleep(10)
+#O código armazena o identificador da janela atual:
+
+original_window = driver.current_window_handle
+#Em seguida, o código fecha uma janela de propaganda clicando no botão de fechar:
+
+close_button = "//button[@title='Close']//*[name()='svg']"
+elem = driver.find_element(By.XPATH, "//button[@title='Close']//*[name()='svg']")
+element = WebDriverWait(driver, 20).until(
+    EC.element_to_be_clickable((By.XPATH, close_button)))
+elem.click()
+
+#O código preenche os campos de origem, destino e datas de ida e volta:
+
+elem = driver.find_element(By.XPATH, "//input[@id='origemCP']")
+elem.send_keys("Brasília (BSB)")
+elem = driver.find_element(By.XPATH, "//input[@id='destinoCP']")
+elem.send_keys("Recife (REC)")
+elem = driver.find_element(By.XPATH, "//input[@id='data-ida']")
+elem.send_keys("25/03/2023")
+elem = driver.find_element(By.XPATH, "//input[@id='data-volta']")
+elem.send_keys("14/04/2023")
+#O código espera 3 segundos para que os resultados da pesquisa sejam carregados:
+
+time.sleep(3)
+#O código clica no botão de pesquisa:
+
+elem = driver.find_element(By.XPATH, "//input[@value='Pesquisar']")
+elem.click()
+
+#O código encontra a janela com os resultados da pesquisa e extrai o preço das passagens usando o BeautifulSoup:
+for window_handle in driver.window_handles:
+    if window_handle != original_window:
+        driver.switch_to.window(window_handle)
+        break
+html = driver.page_source
+soup = BeautifulSoup(html, 'html.parser')
+result = soup.find_all("p", {"class": "item-fare fare-price"})
+for p in result:
+    print(p.find("span", {"class": "amount price-amount"}).text)
+    
+#Finalmente, o código fecha o driver do Chrome:
+driver.quit()
